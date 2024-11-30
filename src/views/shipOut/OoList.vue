@@ -372,6 +372,7 @@ export default {
   // },
   async mounted() {
     console.log('mounted')
+    console.log(this.$route.query)
 
     const database = sessionStorage.getItem('cDatabase')
     const cUserId = sessionStorage.getItem('username')
