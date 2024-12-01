@@ -436,7 +436,7 @@ export default {
   },
   async mounted() {
     console.log('AsnAddmounted')
-
+    console.log('this.$route.query', this.$route.query.vouchCode)
     const database = sessionStorage.getItem('cDatabase')
     const cUserId = sessionStorage.getItem('username')
     const cVenCode = sessionStorage.getItem('cVenCode')

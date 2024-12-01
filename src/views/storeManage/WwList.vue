@@ -664,7 +664,7 @@ select crdcode,crdname from  wlzh_v_Rd_Style`)
     },
     handleRowDoubleClick(row: any) {
       console.log(row, this.$router, 12312312321)
-      router.push({ path: "/storeManage/inventory", query: { "vouchCode": row.id }});
+      router.push({ path: "/storeManage/inventory", query: { "vouchCode": row.vouchCode,"autoid":row.id }});
       // this.VouchID = row.id
 
       // this.dialogVisible = true
