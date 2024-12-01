@@ -51,19 +51,20 @@
             </el-form>
             <el-table :header-cell-style="{ padding: '0px' }" :row-style="{ height: 0 + 'px' }"
               :cell-style="{ padding: 0 + 'px' }" :data="tableData" stripe border style="width: 100%">
-              <el-table-column prop="date" label="存货编码" width="100">
+              <el-table-column prop="cinvcode" label="存货编码" width="130">
               </el-table-column>
-              <el-table-column prop="name" label="存货名称" width="100">
+              <el-table-column prop="cinvname" label="存货名称" width="100">
               </el-table-column>
-              <el-table-column prop="address" label="数量"> </el-table-column>
+              <el-table-column prop="qty" label="数量" width="70"> </el-table-column>
+              <el-table-column prop="cbatch" label="批号" width="120"> </el-table-column>
             </el-table>
           </div>
           <div>
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :current-page="pageIndex" :page-sizes="[5, 10, 20, 50, 100]" :page-size="pageSize" :total="20"
+              :current-page="pageIndex" :page-sizes="[5, 10, 20, 50, 100]" :page-size="pageSize" :total="10"
               layout="prev,pager,next" style="margin-top: 10px"></el-pagination>
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :current-page="pageIndex" :page-sizes="[5, 10, 20, 50, 100]" :page-size="pageSize" :total="20"
+              :current-page="pageIndex" :page-sizes="[5, 10, 20, 50, 100]" :page-size="pageSize" :total="10"
               layout="sizes,total,jumper"></el-pagination>
           </div>
         </el-card>
@@ -73,7 +74,7 @@
           <table style="width: 100%;">
                <tbody>
               <tr v-for="item in dataList"  style="width: 100%; height: 60px;">
-                <td v-for="(val,index) in item.children" style="text-align: center; border: 1px solid black;">{{ val.cPosName }}</td>
+                <td @click="posthw(val.cPosCode)" v-for="(val,index) in item.children" style="text-align: center; border: 1px solid black;">{{ val.cPosName }}</td>
               </tr>
             </tbody>
           </table>
@@ -213,26 +214,6 @@ export default {
       },
       dialogFormSubmitVisible: false,
       tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
       ],
       dataForm: {
         name: ""
@@ -241,7 +222,7 @@ export default {
 
       ],
       pageIndex: 1,
-      pageSize: 5,
+      pageSize: 10,
       totalPage: 0,
       SysInfo:
       {
@@ -259,6 +240,12 @@ export default {
 
   // },
   methods: {
+    async posthw(val:any)
+    {
+      console.log(val);
+      let res = await this.SqlWork("select", "select * from wlzh_dz_hwhz where cdefine22='" + val+ "'");
+      this.tableData=res.data;
+    },
     handleSizeChange(val: any) {
       console.log(`每页 ${val} 条`);
     },
@@ -277,6 +264,7 @@ export default {
         }
       })
       this.dataList = this.transListDataToTreeData1(res.data,arr)
+      this.tableData=[]
     },
     transListDataToTreeData1(list: any, data:any) {
       const arr: any = [];
@@ -361,9 +349,6 @@ export default {
 
 
 }
-
-
-
 
 </script>
 

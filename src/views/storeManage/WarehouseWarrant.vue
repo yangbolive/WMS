@@ -17,14 +17,14 @@
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple-light">
             <el-form-item label="收发类别:">
-              <el-input v-model="headerData.cvencode" disabled />
+              <el-input v-model="headerData.crdname" disabled />
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
             <el-form-item label="单据类型:">
-              <el-input v-model="headerData.cvouchtype" disabled />
+              <el-input v-model="headerData.cvouchtypename" disabled />
             </el-form-item>
           </div>
         </el-col>
@@ -34,7 +34,7 @@
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
             <el-form-item label="单据日期:">
-              <el-input v-model="headerData.vouchDate" disabled />
+              <el-input v-model="headerData.ddate" disabled />
             </el-form-item>
           </div>
         </el-col>
@@ -58,7 +58,7 @@
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
             <el-form-item label="供应商:">
-              <el-input v-model="headerData.contacts" disabled />
+              <el-input v-model="headerData.cvenname" disabled />
             </el-form-item>
           </div>
         </el-col>
@@ -66,7 +66,7 @@
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
             <el-form-item label="备注:">
-              <el-input v-model="headerData.cheadmemo" />
+              <el-input v-model="headerData.cmemo" disabled/>
             </el-form-item>
           </div>
         </el-col>
@@ -75,40 +75,54 @@
       <el-row class="el-row">
         <el-col :span="22" class="el-col">
           <el-button-group>
-            <el-button @click="dialogVisible = true"
+            <el-button v-show="false" @click="dialogVisible = true"
               ><el-icon>
                 <Plus
                   style="width: 10em; height: 10em; margin-right: 0px"
                 /> </el-icon
               ><span>增加</span></el-button
             >
-            <el-button @click="dialogVisible = true"
+            <el-button v-show="false" @click="dialogVisible = true"
               ><el-icon>
                 <Edit
                   style="width: 10em; height: 10em; margin-right: 0px"
                 /> </el-icon
               ><span>修改</span></el-button
             >
-            <el-button @click="delRow"
+            <el-button v-show="false" @click="delRow"
               ><el-icon>
                 <Delete
                   style="width: 10em; height: 10em; margin-right: 0px"
                 /> </el-icon
               ><span>删行</span></el-button
             >
-            <el-button @click="clear"
+            <el-button v-show="false" @click="clear"
               ><el-icon>
                 <RefreshLeft
                   style="width: 10em; height: 10em; margin-right: 0px"
                 /> </el-icon
               ><span>放弃</span></el-button
             >
-            <el-button @click="save"
+            <el-button v-show="false" @click="save"
               ><el-icon>
                 <Memo
                   style="width: 10em; height: 10em; margin-right: 0px"
                 /> </el-icon
               ><span>保存</span></el-button
+            >
+            <el-button @click="sh"
+              ><el-icon>
+                <Memo
+                  style="width: 10em; height: 10em; margin-right: 0px"
+                /> </el-icon
+              ><span>审核</span></el-button
+            >
+            <el-button @click="unsh"
+              ><el-icon>
+                <Memo
+                  style="width: 10em; height: 10em; margin-right: 0px"
+                /> </el-icon
+              ><span>弃审</span></el-button
             >
             <el-button @click="print('print')"
               ><el-icon>
@@ -156,15 +170,43 @@
           />
           <el-table-column prop="cinvname" label="存货名称" width="180" />
           <el-table-column prop="cinvstd" label="规格型号" width="180" />
-          <el-table-column prop="cinvm_unit" label="计量单位" width="110" />
-          <el-table-column prop="ipoquantity" label="批次" width="220" />
-          <el-table-column prop="ipoquantity" label="货位编码" width="220" />
-          <el-table-column prop="ipoquantity" label="数量" />
-          <el-table-column prop="zdr" width="180" label="制单人" />
-          <el-table-column prop="zdsj" width="180" label="制单时间" />
-          <el-table-column prop="spr" width="180" label="审核人" />
-          <el-table-column prop="spsj" width="180" label="审核时间" />
+          <el-table-column prop="ccomunitname" label="计量单位" width="110" />
+          <el-table-column prop="cbatch" label="批次" width="220" />
+          <el-table-column prop="cPosName" label="货位编码" width="220" />
+          <el-table-column prop="inqty" label="数量" />
+          <el-table-column prop="cmocode" width="180" label="生产订单号" />
+          <el-table-column prop="cbmemo" width="100" label="表体备注" />
         </el-table>
+      </el-row>
+      <el-row class="el-row">
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="制单人:">
+              <el-input v-model="headerData.cMaker" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="制单时间">
+              <el-input v-model="headerData.maketime" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="审核人:">
+              <el-input v-model="headerData.cHandler" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="审核时间:">
+              <el-input v-model="headerData.handletime" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
       </el-row>
     </el-form>
     <el-dialog
@@ -303,7 +345,7 @@
                 :sortable="true"
               />
               <el-table-column
-                prop="cvouchtype"
+                prop="cvenname"
                 label="供应商"
                 width="250"
                 :sortable="true"
@@ -524,16 +566,23 @@ export default {
       headerData: {
         vouchCode: "",
         crdname: "",
-        cvouchtype: "归还单",
+        cvouchtype: "",
         ddate: "",
         cwhname: "",
         cdepName: "",
         autoid: "",
-        contacts: "供货商",
-        phone: "ID号",
+        cvenname: "",
+        cvencode: "",
+        id: "ID号",
         cheadmemo: "",
         fahuori: "",
         yujidaohuori: "",
+        cmemo: "",
+        cvouchtypename: "",
+        cMaker: "",
+        cHandler: "",
+        maketime: "",
+        handletime: "",
       },
       bodyData: [],
       bodyDataCopypolist_asn: [],
@@ -658,21 +707,23 @@ export default {
     if (this.$route.query.vouchCode) {
       var filterStr: any = "  ";
       this.headerData.vouchCode = this.$route.query.vouchCode + "";
-      this.headerData.autoid=this.$route.query.autoid+"";
+      this.headerData.autoid = this.$route.query.autoid + "";
       const res1 = await this.SqlWork(
         "select",
-        `select cDepName,id,id autoid,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo from wlzh_dz_rklist_u8   where vouchCode='${this.headerData.vouchCode}'`
+        `select stats,cmocode,cDepName,id,id autoid,sort,csource,cvouchtype,case when cvouchtype='01' then '采购入库' when cvouchtype='10'  then '产品入库' else '其他入库' end cvouchtypename,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty,cbmemo,cMaker,cHandler,maketime,handletime from wlzh_dz_rklist_u8   where vouchCode='${this.headerData.vouchCode}' and id='${this.headerData.autoid}'`
       );
       if (this.headerData.vouchCode) {
         filterStr +=
           (filterStr !== "  " ? "and " : "where ") +
           "  vouchCode='" +
           this.headerData.vouchCode +
+          "' and  id='" +
+          this.headerData.autoid +
           "'";
       }
       const res2 = await this.SqlWork(
         "select",
-        "select cDepName,id,id autoid,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo from wlzh_dz_rklist_u8 " +
+        "select stats,cmocode,cDepName,id,id autoid,sort,csource,cvouchtype,case when cvouchtype='01' then '采购入库单' when cvouchtype='10'  then '产品入库单' else '其他入库单' end cvouchtypename,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty ,outqty,cbmemo,cPosName,cMaker,cHandler,maketime,handletime from wlzh_dz_rklist_u8 " +
           filterStr
       );
       console.log(
@@ -681,11 +732,19 @@ export default {
         this.headerData,
         "this.headerDatathis.headerDatathis.headerDatathis.headerData"
       );
-      this.headerData.crdname = res2.data[0].cRdName;
+      this.headerData.crdname = res2.data[0].crdname;
       this.headerData.ddate = res2.data[0].ddate;
-      this.headerData.cwhname = res2.data[0].cwhcode;
+      this.headerData.cwhname = res2.data[0].cwhname;
       this.headerData.cdepName = res2.data[0].cDepName;
       this.headerData.autoid = res2.data[0].autoid;
+      this.headerData.cvenname = res2.data[0].cvenname;
+      this.headerData.cvouchtypename = res2.data[0].cvouchtypename;
+      this.headerData.cMaker = res2.data[0].cMaker;
+      this.headerData.cHandler = res2.data[0].cHandler;
+      this.headerData.maketime = res2.data[0].maketime;
+      this.headerData.handletime = res2.data[0].handletime;
+      this.headerData.cmemo = res2.data[0].cmemo;
+      this.headerData.cvouchtype=res2.data[0].cvouchtype;
       this.bodyData = res2.data;
     }
     webapp_urlprotocol_run();
@@ -903,7 +962,7 @@ export default {
             this.headerData.cvouchtype = (
               this.multipleSelection[0] as any
             ).cvouchtype;
-            this.headerData.vouchDate = moment(new Date()).format("YYYY-MM-DD");
+            this.headerData.ddate = moment(new Date()).format("YYYY-MM-DD");
 
             this.multipleSelection.forEach(async (item: any) => {
               var newitem = JSON.parse(JSON.stringify(item));
@@ -1054,6 +1113,123 @@ export default {
           });
       }
     },
+    sh() {
+      var b = true;
+      if (this.bodyData.length == 0) {
+        ElMessageBox.confirm("没有可审核的数据", "错误！", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        });
+        b = false;
+      }
+      if (b == true) {
+        let that = this;
+        ElMessageBox.confirm(`确定审核?`)
+          .then(() => {
+            that.wlzh_dz_sh();
+          })
+          .catch(() => {
+            // catch error
+          });
+      }
+    },
+    async wlzh_dz_sh() {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      let res = await this.SqlWork(
+        "select",
+        "exec wlzh_P_dz_Examinedocuments '" +
+          this.headerData.autoid +
+          "','" +
+          this.headerData.cvouchtype +
+          "','demo','1'"
+      );
+      console.log(res);
+      loading.close();
+      if (res.data[0].result == "1") {
+        ElMessage({
+          type: "success",
+          message: "审核成功!",
+          showClose: true,
+        });
+        this.headerData.cHandler = "demo";
+        var today = new Date();
+        //日期
+        var DD = String(today.getDate()).padStart(2, "0"); // 获取日
+        var MM = String(today.getMonth() + 1).padStart(2, "0"); //获取月份，1 月为 0
+        var yyyy = today.getFullYear(); // 获取年
+        // 时间
+        var hh = String(today.getHours()).padStart(2, "0"); //获取当前小时数(0-23)
+        var mm = String(today.getMinutes()).padStart(2, "0"); //获取当前分钟数(0-59)
+        var ss = String(today.getSeconds()).padStart(2, "0"); //获取当前秒数(0-59)
+        var newtoday =
+          yyyy + "-" + MM + "-" + DD + " " + hh + ":" + mm + ":" + ss;
+        this.headerData.handletime = newtoday;
+      } else {
+        ElMessage({
+          type: "warning",
+          message: res.data[0].cmsg,
+          showClose: true,
+        });
+      }
+    },
+    unsh() {
+      var b = true;
+      if (this.bodyData.length == 0) {
+        ElMessageBox.confirm("没有可弃审的数据", "错误！", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        });
+        b = false;
+      }
+      if (b == true) {
+        let that = this;
+        ElMessageBox.confirm(`确定弃审?`)
+          .then(() => {
+            that.wlzh_dz_unsh();
+          })
+          .catch(() => {
+            // catch error
+          });
+      }
+    },
+    async wlzh_dz_unsh() {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      let res = await this.SqlWork(
+        "select",
+        "exec wlzh_P_dz_Examinedocuments '" +
+          this.headerData.autoid +
+          "','" +
+          this.headerData.cvouchtype +
+          "','demo','0'"
+      );
+      console.log(res);
+      loading.close();
+      if (res.data[0].result == "1") {
+        ElMessage({
+          type: "success",
+          message: "弃审成功!",
+          showClose: true,
+        });
+        this.headerData.cHandler = "";
+        this.headerData.handletime = "";
+      } else {
+        ElMessage({
+          type: "warning",
+          message: res.data[0].cmsg,
+          showClose: true,
+        });
+      }
+    },
     async wlzh_ly_saveasn() {
       const loading = ElLoading.service({
         lock: true,
@@ -1145,7 +1321,7 @@ export default {
           that.headerData.vouchCode = "";
           that.headerData.cvencode = "";
           that.headerData.cvouchtype = "";
-          that.headerData.vouchDate = "";
+          that.headerData.ddate = "";
           that.headerData.cheadmemo = "";
           that.headerData.yujidaohuori = "";
           that.headerData.fahuori = "";
