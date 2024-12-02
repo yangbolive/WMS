@@ -248,8 +248,9 @@
             width="120"
             :sortable="true"
           />
-          <el-table-column prop="cbmemo" label="表体备注" width="120">
-          </el-table-column>
+          <el-table-column prop="cbmemo" label="表体备注" width="120"></el-table-column>
+          <el-table-column prop="cposcname" label="区域" width="120"></el-table-column>
+          <el-table-column prop="cposname" label="货位名称" width="120">  </el-table-column>
         </el-table>
         <el-table
           v-if="headerData1.length"

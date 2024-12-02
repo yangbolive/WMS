@@ -132,7 +132,7 @@
       <el-row class="el-row">
 
         <el-table v-if="!headerData1.length" :data="fiterBodyData_List()" @row-dblclick="handleRowDoubleClick"
-          style="height: 630px; width: 100%" highlight-current-row :row-class-name="tableRowClassName" ref="multipleTableRef" border>
+          style=" width: 100%" highlight-current-row :row-class-name="tableRowClassName" ref="multipleTableRef" border>
 
           <!-- <el-table-column  prop="selected"  type="selection" width="55" :sortable="true" fixed/> -->
           <el-table-column prop="vouchCode" label="单据编号" width="180" :sortable="true">
@@ -160,8 +160,9 @@
 
           <el-table-column prop="inqty" label="入库数量" width="120"> </el-table-column>
 
-          <el-table-column prop="cbMemo" label="表体备注" width="120">
-          </el-table-column>
+          <el-table-column prop="cbMemo" label="表体备注" width="120"> </el-table-column>
+          <el-table-column prop="cposcname" label="区域" width="120"></el-table-column>
+          <el-table-column prop="cposname" label="货位名称" width="120">  </el-table-column>
         </el-table>
         <el-table v-if="headerData1.length" @row-dblclick="handleRowDoubleClick" :data="fiterBodyData_List()"
           style="width: 100%" highlight-current-row ref="multipleTableRef" border>

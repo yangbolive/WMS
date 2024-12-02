@@ -132,6 +132,20 @@
                 /> </el-icon
               ><span>删除单据</span></el-button
             >
+            <el-button @click="sh"
+              ><el-icon>
+                <Lock
+                  style="width: 10em; height: 10em; margin-right: 0px"
+                /> </el-icon
+              ><span>审核</span></el-button
+            >
+            <el-button @click="unsh"
+              ><el-icon>
+                <Unlock
+                  style="width: 10em; height: 10em; margin-right: 0px"
+                /> </el-icon
+              ><span>弃审</span></el-button
+            >
             <el-button @click="print('print')"
               ><el-icon>
                 <Printer
@@ -157,7 +171,7 @@
       <el-row class="el-row">
         <el-table
           :data="bodyData"
-          style="height: 650px; width: 100%"
+          style="width: 100%"
           @selection-change="bodyhandleSelectionChange"
           :row-class-name="tableRowClassName"
           ref="multipleTableRef"
@@ -213,13 +227,13 @@
           <el-table-column
             prop="cvenname"
             label="供应商名称"
-            width="300"
+            width="200"
             :sortable="true"
           />
           <el-table-column
             prop="cposccode"
             label="区域"
-            width="120"
+            width="150"
             :sortable="true"
           >
             <template #default="scope">
@@ -240,14 +254,14 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="cposcode"
+            prop="cposname"
             label="货位"
             width="250"
             :sortable="true"
           >
             <template #default="scope">
               <el-select
-                v-model="scope.row.cposcode"
+                v-model="scope.row.cposname"
                 clearable
                 filterable
                 placeholder="请选择区域后才能选择对应货位"
@@ -294,6 +308,36 @@
             </template>
           </el-table-column>
         </el-table>
+      </el-row>
+      <el-row class="el-row">
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="制单人:">
+              <el-input v-model="headerData.cmaker" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="制单时间">
+              <el-input v-model="headerData.maketime" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="审核人:">
+              <el-input v-model="headerData.chandler" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="5" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="审核时间:">
+              <el-input v-model="headerData.handletime" disabled />
+            </el-form-item>
+          </div>
+        </el-col>
       </el-row>
     </el-form>
     <el-dialog
@@ -373,7 +417,6 @@
               @selection-change="handleSelectionChange"
               highlight-current-row
               ref="CopypolistTableRef"
-              border
             >
               <el-table-column
                 prop="choice"
@@ -437,7 +480,6 @@
           </el-row>
         </el-form>
       </div>
-
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
@@ -636,6 +678,10 @@ export default {
         cheadmemo: "",
         fahuori: "",
         yujidaohuori: "",
+        cmaker: "",
+        maketime: "",
+        chandler: "",
+        handletime: "",
       },
       bodyData: [],
       bodyDataCopypolist_asn: [],
@@ -755,7 +801,7 @@ export default {
     });
     let res = await this.SqlWork(
       "select",
-      "select id,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo from wlzh_v_DaoJuDetail_jc  where vouchCode='" +
+      "select id,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo,cmaker,maketime,chandler,handletime,cposccode,cposcname,cposname from wlzh_v_DaoJuDetail_jc  where vouchCode='" +
         this.SysInfo.cUserId +
         "' "
     );
@@ -772,7 +818,7 @@ export default {
       this.headerData.vouchCode = this.$route.query.vouchCode + "";
       const res1 = await this.SqlWork(
         "select",
-        `select cDepName,id,autoid,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo from wlzh_v_DaoJuDetail_gh  where vouchCode='${this.headerData.vouchCode}'`
+        `select cDepName,id,autoid,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo,cmaker,maketime,chandler,handletime,cposccode,cposcname,cposname from wlzh_v_DaoJuDetail_jc  where vouchCode='${this.headerData.vouchCode}'`
       );
       if (this.headerData.vouchCode) {
         filterStr +=
@@ -783,7 +829,7 @@ export default {
       }
       const res2 = await this.SqlWork(
         "select",
-        "select cDepName,id,autoid,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo from wlzh_v_DaoJuDetail_jc " +
+        "select cDepName,id,autoid,sort,csource,cvouchtype,vouchcode ccode,vouchdate ddate,crdname,cmemo,cvencode,cvenname,cwhcode,cwhname,cposcode,cinvcode,cinvname,cinvstd,ccomunitcode,ccomunitname,cbatch,inqty,outqty qty,cbmemo,cmaker,maketime,chandler,handletime,cposccode,cposcname,cposname from wlzh_v_DaoJuDetail_jc " +
           filterStr
       );
       console.log(
@@ -798,6 +844,10 @@ export default {
       this.headerData.cdepName = res2.data[0].cdepcode;
       this.headerData.autoid = res2.data[0].autoid;
       this.headerData.cdepName = res2.data[0].cDepName;
+      this.headerData.cmaker = res2.data[0].cmaker;
+      this.headerData.chandler = res2.data[0].chandler;
+      this.headerData.maketime = res2.data[0].maketime;
+      this.headerData.handletime = res2.data[0].handletime;
       this.bodyData = res2.data;
     }
 
@@ -1234,6 +1284,10 @@ export default {
             cheadmemo: "",
             fahuori: "",
             yujidaohuori: "",
+            cmaker:"",
+            maketime:"",
+            chandler:"",
+            handletime:""
           }),
             (this.bodyData = []);
         } else {
@@ -1251,6 +1305,119 @@ export default {
         ElMessage({
           type: "warning",
           message: "删除失败!",
+          showClose: true,
+        });
+      }
+    },
+    sh() {
+      var b = true;
+      if (this.bodyData.length == 0) {
+        ElMessageBox.confirm("没有可审核的数据", "错误！", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        });
+        b = false;
+      }
+      if (b == true) {
+        let that = this;
+        ElMessageBox.confirm(`确定审核?`)
+          .then(() => {
+            that.wlzh_dz_sh();
+          })
+          .catch(() => {
+            // catch error
+          });
+      }
+    },
+    async wlzh_dz_sh() {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      let res = await this.SqlWork(
+        "select",
+        "exec wlzh_P_dz_Examinedocuments_daoju '" +
+          this.headerData.autoid +
+          "','01','demo','1'"
+      );
+      console.log(res);
+      loading.close();
+      if (res.data[0].result == "1") {
+        ElMessage({
+          type: "success",
+          message: "审核成功!",
+          showClose: true,
+        });
+        this.headerData.chandler = "demo";
+        var today = new Date();
+        //日期
+        var DD = String(today.getDate()).padStart(2, "0"); // 获取日
+        var MM = String(today.getMonth() + 1).padStart(2, "0"); //获取月份，1 月为 0
+        var yyyy = today.getFullYear(); // 获取年
+        // 时间
+        var hh = String(today.getHours()).padStart(2, "0"); //获取当前小时数(0-23)
+        var mm = String(today.getMinutes()).padStart(2, "0"); //获取当前分钟数(0-59)
+        var ss = String(today.getSeconds()).padStart(2, "0"); //获取当前秒数(0-59)
+        var newtoday =
+          yyyy + "-" + MM + "-" + DD + " " + hh + ":" + mm + ":" + ss;
+        this.headerData.handletime = newtoday;
+      } else {
+        ElMessage({
+          type: "warning",
+          message: res.data[0].cmsg,
+          showClose: true,
+        });
+      }
+    },
+    unsh() {
+      var b = true;
+      if (this.bodyData.length == 0) {
+        ElMessageBox.confirm("没有可弃审的数据", "错误！", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        });
+        b = false;
+      }
+      if (b == true) {
+        let that = this;
+        ElMessageBox.confirm(`确定弃审?`)
+          .then(() => {
+            that.wlzh_dz_unsh();
+          })
+          .catch(() => {
+            // catch error
+          });
+      }
+    },
+    async wlzh_dz_unsh() {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      let res = await this.SqlWork(
+        "select",
+        "exec wlzh_P_dz_Examinedocuments_daoju '" +
+          this.headerData.autoid +
+          "','01','demo','0'"
+      );
+      console.log(res);
+      loading.close();
+      if (res.data[0].result == "1") {
+        ElMessage({
+          type: "success",
+          message: "弃审成功!",
+          showClose: true,
+        });
+        this.headerData.chandler = "";
+        this.headerData.handletime = "";
+      } else {
+        ElMessage({
+          type: "warning",
+          message: res.data[0].cmsg,
           showClose: true,
         });
       }
@@ -1290,7 +1457,7 @@ VALUES('01','U8','','${this.headerData.ddate}','${item.id}','${item.autoid}','${
             showClose: true,
           });
           this.headerData.vouchCode = res.data[0].Vcode;
-          this.headerData.autoid=GID;
+          this.headerData.autoid = GID;
         } else {
           ElMessage({
             type: "warning",
