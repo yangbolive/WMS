@@ -364,8 +364,8 @@ export default {
       total_List: 0,
       multipleSelection_List: [],
       bodymultipleSelection: [],
-      headerData1: [] as HeaderItem[],
-      headerData2: [] as HeaderItem[],
+      headerData1: [],
+      headerData2: [],
       cposcList: [
         {
           value: "",

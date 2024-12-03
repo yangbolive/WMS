@@ -9,28 +9,49 @@
       <el-row class="el-row">
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
-            <el-form-item label="产品编号:">
+            <el-form-item label="单据编号:">
               <el-input
-                v-model="filters.cinvcode"
-                placeholder="请输入产品编号"
+                v-model="filters.vouchCode"
+                placeholder="请输入单据编号"
               />
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple">
-            <el-form-item label="产品名称:">
-              <el-input
-                v-model="filters.cinvname"
-                placeholder="请输入产品名称"
-              />
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="单据类型:">
+              <el-select
+                v-model="filters.cvouchtype"
+                clearable
+                filterable
+                placeholder="请输入单据类型"
+              >
+                <el-option
+                  v-for="item in cvouchtypeList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
-            <el-form-item label="批号:">
-              <el-input v-model="filters.cbatch" placeholder="请输入批号" />
+            <el-form-item label="仓库名称:">
+              <el-select
+                v-model="filters.cwhname"
+                clearable
+                filterable
+                placeholder="请输入仓库名称"
+              >
+                <el-option
+                  v-for="item in cwhnameList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-form-item>
           </div>
         </el-col>
@@ -41,7 +62,7 @@
           <div class="grid-content ep-bg-purple">
             <el-form-item label="起始日期:">
               <el-date-picker
-                v-model="filters.ddate"
+                v-model="filters.vouchDate"
                 type="daterange"
                 unlink-panels
                 range-separator="To"
@@ -53,16 +74,104 @@
           </div>
         </el-col>
         <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple">
-            <el-form-item label="货位:">
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="部门名称:">
               <el-select
-                v-model="filters.cposcode"
+                v-model="filters.cdepName"
                 clearable
                 filterable
-                placeholder="请选择货位"
+                placeholder="请输入部门名称"
               >
                 <el-option
-                  v-for="item in cposList"
+                  v-for="item in cdepNameList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8" class="el-col">
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="表头备注:">
+              <el-input v-model="filters.cMemo" placeholder="请输入表头备注" />
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row class="el-row">
+        <el-col :span="8" class="el-col">
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="表体备注:">
+              <el-input v-model="filters.cbmemo" placeholder="请输入表体备注" />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="存货编码:">
+              <el-input
+                v-model="filters.cinvcode"
+                @focus="cinvcodeFocus"
+                placeholder="请输入存货编码"
+              />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="客户:">
+              <el-select
+                v-model="filters.ccusname"
+                clearable
+                filterable
+                placeholder="请输入客户名称"
+              >
+                <el-option
+                  v-for="item in ccusnameList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row class="el-row">
+        <el-col :span="8" class="el-col">
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="收发类别:">
+              <el-select
+                v-model="filters.crdname"
+                clearable
+                filterable
+                placeholder="请输入收发类别"
+              >
+                <el-option
+                  v-for="item in crdnameList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8" class="el-col">
+          <div class="grid-content ep-bg-purple-light">
+            <el-form-item label="单据状态:">
+              <el-select
+                v-model="filters.stats"
+                clearable
+                filterable
+                placeholder="请选择状态"
+              >
+                <el-option
+                  v-for="item in shztList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -105,6 +214,7 @@
         <el-table
           v-if="!headerData1.length"
           :data="fiterBodyData_List()"
+          @row-dblclick="handleRowDoubleClick"
           style="width: 100%"
           highlight-current-row
           :row-class-name="tableRowClassName"
@@ -112,28 +222,77 @@
           border
         >
           <!-- <el-table-column  prop="selected"  type="selection" width="55" :sortable="true" fixed/> -->
-          <el-table-column prop="cinvcode" label="产品编码" width="200" />
-          <el-table-column prop="cinvname" label="产品名称" width="200" />
-          <el-table-column prop="cinvstd" label="规格型号" width="200" />
-          <el-table-column prop="cComUnitName" label="计量单位" width="100" />
-          <el-table-column prop="cbatch" label="批号" width="120" />
-          <el-table-column prop="cposcode" label="货位编码" width="150" />
-          <el-table-column prop="cposname" label="货位名称" width="150" />
-          <el-table-column prop="cposccode" label="区域编码" width="150" />
-          <el-table-column prop="cposcname" label="区域名称" width="150" />
-          <el-table-column prop="qcqty" label="期初数量" width="100" />
-          <el-table-column prop="rkqty" label="本期入库数量" width="120" />
-          <el-table-column prop="ckqty" label="本期出库数量" width="120" />
-          <el-table-column prop="jcqty" label="结存数量" width="120" />
+          <el-table-column
+            prop="vouchCode"
+            label="单据编号"
+            width="180"
+            :sortable="true"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="vouchDate"
+            label="单据日期"
+            width="180"
+            :sortable="true"
+          />
+          <el-table-column
+            prop="crdname"
+            label="收发类别"
+            width="180"
+            :sortable="true"
+          />
+          <el-table-column prop="ccusname" label="客户" width="180" />
+          <el-table-column prop="cwhname" label="仓库" width="180" />
+          <el-table-column prop="cPosName" label="货位" width="130" />
+          <el-table-column prop="cinvcode" label="存货编码" width="120" />
+          <el-table-column prop="cinvname" label="存货名称" width="120" />
+          <el-table-column prop="cinvstd" label="规格型号" width="120" />
+          <el-table-column prop="cComunitName" label="计量单位" width="120">
+          </el-table-column>
+          <el-table-column
+            prop="cbatch"
+            label="批次"
+            width="120"
+            :sortable="true"
+          />
+          <el-table-column
+            prop="inqty"
+            label="入库数量"
+            width="120"
+            :sortable="true"
+          />
+          <el-table-column
+            prop="cmocode"
+            label="生产订单号"
+            width="180"
+            :sortable="true"
+          />
+          <el-table-column
+            prop="cMemo"
+            label="表头备注"
+            width="120"
+            :sortable="true"
+          />
+          <el-table-column prop="cbmemo" label="表体备注" width="120">
+          </el-table-column>
         </el-table>
         <el-table
           v-if="headerData1.length"
+          @row-dblclick="handleRowDoubleClick"
           :data="fiterBodyData_List()"
           style="width: 100%"
           highlight-current-row
           ref="multipleTableRef"
           border
         >
+          <el-table-column
+            v-for="(item, index) in headerData1"
+            :prop="item.defaultname"
+            :key="index"
+            :width="item.width"
+            :label="item.name"
+          >
+          </el-table-column>
         </el-table>
       </el-row>
       <el-row class="el-row">
@@ -163,6 +322,7 @@
       <cinvcodeDialog
         @recognize="recognize"
         @determine="determine"
+        @close="close"
         v-if="dialogVisible"
         ref="refAsnvoucher"
       >
@@ -200,8 +360,10 @@ import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { fa } from "element-plus/es/locale";
 
+
 export default {
-  components: {},
+  components: {
+  },
   setup() {
     const instance = getCurrentInstance();
     const globalObject =
@@ -336,35 +498,32 @@ export default {
         vouchCode: "",
         cdepName: "",
         cinvstd: "",
-        sddate: ref(""),
+        vouchDate: ref(""),
         cinvcode: "",
         cvouchtype: "",
-        cposccode: "",
-        eddate: ref(""),
-        ddate: ref(""),
+        cwhname: "",
+        dpodate: ref(""),
         zhuangtai: "",
-        cposcode: "",
+        ccusname: "",
         cMemo: "",
         cbmemo: "",
         crdname: "",
         stats: "",
-        cinvname: "",
-        cbatch: "",
       },
       pageNum_List: 1,
       pageSize_List: 10,
       total_List: 0,
       multipleSelection_List: [],
       bodymultipleSelection: [],
-      headerData1: [],
-      headerData2: [],
-      cposcList: [
+      headerData1: [] as HeaderItem[],
+      headerData2: [] as HeaderItem[],
+      cwhnameList: [
         {
           value: "",
           label: "",
         },
       ],
-      cposList: [
+      ccusnameList: [
         {
           value: "",
           label: "",
@@ -386,6 +545,16 @@ export default {
         {
           value: "",
           label: "",
+        },
+      ],
+      shztList: [
+        {
+          value: "0",
+          label: "未审",
+        },
+        {
+          value: "1",
+          label: "已审",
         },
       ],
       ElSelectLoading: false,
@@ -418,25 +587,25 @@ export default {
     const cUserId = sessionStorage.getItem("username");
     const cVenCode = sessionStorage.getItem("cVenCode");
     var roles = sessionStorage.getItem("roles");
-    //区域列表
-    let cposcList = await this.SqlWork(
+    //仓库列表
+    let cwhnameRes = await this.SqlWork(
       "select",
-      `select cposccode,cposcname from wlzh_Dz_positionClass`
+      `select cwhcode,cwhname from wlzh_v_warehouse`
     );
-    console.log("cposcList", cposcList.data);
-    this.cposcList = [];
-    cposcList.data.forEach((item: any) => {
-      this.cposcList.push({ value: item.cposccode, label: item.cposcname });
+    console.log("cwhnameRes", cwhnameRes.data);
+    this.cwhnameList = [];
+    cwhnameRes.data.forEach((item: any) => {
+      this.cwhnameList.push({ value: item.cwhcode, label: item.cwhname });
     });
-    //货位列表
-    let cposList = await this.SqlWork(
+    //客户列表
+    let ccusnameRes = await this.SqlWork(
       "select",
-      `select cposcode,cposname from wlzh_Dz_position`
+      `select ccuscode,ccusname from wlzh_v_Customer`
     );
-    console.log("cposList", cposList.data);
-    this.cposList = [];
-    cposList.data.forEach((item: any) => {
-      this.cposList.push({ value: item.cposcode, label: item.cposname });
+    console.log("ccusnameRes", ccusnameRes.data);
+    this.ccusnameList = [];
+    ccusnameRes.data.forEach((item: any) => {
+      this.ccusnameList.push({ value: item.ccuscode, label: item.ccusname });
     });
     //单据列表
     let cvouchtypeRes = await this.SqlWork(
@@ -569,25 +738,123 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
 
     async loadData() {
       try {
-        if(this.filters.ddate!="")
-          {
-                this.filters.sddate=this.filters.ddate[0].toISOString().substring(0, 10)
-                this.filters.eddate=this.filters.ddate[1].toISOString().substring(0, 10)
-                console.log(this.filters.sddate)
-                console.log(this.filters.sddate)
-          }
+        console.log("this.filters.vouchDate", this.filters.vouchDate);
+        //let res = await this.testSqlWork4()
+        // const loading = ElLoading.service({lock: true,text: 'Loading',background: 'rgba(0, 0, 0, 0.7)',})
+        //   const loading = ElLoading.service({
+        //   lock: true,
+        //   text: 'Loading',
+        //   background: 'rgba(0, 0, 0, 0.7)',
+        // })
+
+        //this.fullscreenLoading = true;
+        // const loading = ElLoading.service({ lock: true, text: 'Loading', background: 'rgba(0, 0, 0, 0.7)', })
+
+        var filterStr = "  ";
+
+        if (this.filters.ccusname) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            " ccuscode= '" +
+            this.filters.ccusname +
+            "'";
+        }
+        if (this.filters.cdepName) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            " cdepcode= '" +
+            this.filters.cdepName +
+            "'";
+        }
+        if (this.filters.cvouchtype) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cvouchtype= '" +
+            this.filters.cvouchtype +
+            "'";
+        }
+
+        if (this.filters.cwhname) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cwhcode = '" +
+            this.filters.cwhname +
+            "'";
+        }
+
+        if (this.filters.cinvstd) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cinvstd= '" +
+            this.filters.cinvstd +
+            "'";
+        }
+        if (this.filters.cinvcode) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cinvcode= '" +
+            this.filters.cinvcode +
+            "'";
+        }
+        if (this.filters.vouchDate && this.filters.vouchDate.length > 0) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  vouchDate between '" +
+            moment(this.filters.vouchDate[0]).format("YYYY-MM-DD") +
+            "' and '" +
+            moment(this.filters.vouchDate[1]).format("YYYY-MM-DD") +
+            "'";
+        }
+
+        if (this.filters.dpodate && this.filters.dpodate.length > 0) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cpodate between '" +
+            moment(this.filters.dpodate[0]).format("YYYY-MM-DD") +
+            "' and '" +
+            moment(this.filters.dpodate[1]).format("YYYY-MM-DD") +
+            "'";
+        }
+
+        if (this.filters.vouchCode) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  vouchCode='" +
+            this.filters.vouchCode +
+            "'";
+        }
+        if (this.filters.crdname) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  crdcode='" +
+            this.filters.crdname +
+            "'";
+        }
+        if (this.filters.stats) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  stats='" +
+            this.filters.stats +
+            "'";
+        }
+        if (this.filters.cbmemo) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cbmemo='" +
+            this.filters.cbmemo +
+            "'";
+        }
+        if (this.filters.cMemo) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cMemo=''" +
+            this.filters.cMemo +
+            "'";
+        }
         let sql =
-          "exec wlzh_p_dz_hwsfc '" +
-          this.filters.sddate +
-          "','" +
-          this.filters.eddate +
-          "','" +
-          this.filters.cinvcode +
-          "','" +
-          this.filters.cbatch +
-          "','" +
-          this.filters.cposcode +
-          "'";
+          filterStr !== "  "
+            ? " select * from wlzh_dz_cklist_u8 " + filterStr
+            : "select * from wlzh_dz_cklist_u8";
 
         let res = await this.SqlWork("select", sql);
 
@@ -682,20 +949,27 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
       this.filters.cinvcode = value.cinvname;
       this.dialogVisible = false;
     },
-    // this.VouchID = row.id
+    handleRowDoubleClick(row: any) {
+      console.log(row, this.$router, 12312312321);
+      router.push({
+        path: "/shipOut/warehouse",
+        query: { vouchCode: row.vouchCode, autoid: row.id },
+      });
+      // this.VouchID = row.id
 
-    // this.dialogVisible = true
-  },
-  close() {
-    this.dialogVisible = false;
-  },
-  isNumeric(char: any): boolean {
-    // 正则表达式匹配数字，包括整数、浮点数以及正负号
-    const numericPattern = /^[0-9]+(\.[0-9]*)?$/;
-    // 如果是单个字符，先转换为字符串，然后匹配
-    const charStr = String(char);
-    // 判断是否匹配
-    return numericPattern.test(charStr);
+      // this.dialogVisible = true
+    },
+    close() {
+      this.dialogVisible = false;
+    },
+    isNumeric(char: any): boolean {
+      // 正则表达式匹配数字，包括整数、浮点数以及正负号
+      const numericPattern = /^[0-9]+(\.[0-9]*)?$/;
+      // 如果是单个字符，先转换为字符串，然后匹配
+      const charStr = String(char);
+      // 判断是否匹配
+      return numericPattern.test(charStr);
+    },
   },
 };
 </script>
