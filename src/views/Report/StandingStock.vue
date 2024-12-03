@@ -9,133 +9,28 @@
       <el-row class="el-row">
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
-            <el-form-item label="单据编号:">
-              <el-input
-                v-model="filters.vouchCode"
-                placeholder="请输入单据编号"
-              />
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple-light">
-            <el-form-item label="单据类型:">
-              <el-select
-                v-model="filters.cvouchtype"
-                clearable
-                filterable
-                placeholder="请输入单据类型"
-              >
-                <el-option
-                  v-for="item in cvouchtypeList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple">
-            <el-form-item label="仓库名称:">
-              <el-select
-                v-model="filters.cwhname"
-                clearable
-                filterable
-                placeholder="请输入仓库名称"
-              >
-                <el-option
-                  v-for="item in cwhnameList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row class="el-row">
-        <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple">
-            <el-form-item label="起始日期:">
-              <el-date-picker
-                v-model="filters.vouchDate"
-                type="daterange"
-                unlink-panels
-                range-separator="To"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :shortcuts="shortcuts"
-              />
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple-light">
-            <el-form-item label="部门名称:">
-              <el-select
-                v-model="filters.cdepName"
-                clearable
-                filterable
-                placeholder="请输入部门名称"
-              >
-                <el-option
-                  v-for="item in cdepNameList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple-light">
-            <el-form-item label="表头备注:">
-              <el-input v-model="filters.cMemo" placeholder="请输入表头备注" />
-            </el-form-item>
-          </div>
-        </el-col>
-      </el-row>
-
-      <el-row class="el-row">
-        <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple-light">
-            <el-form-item label="表体备注:">
-              <el-input v-model="filters.cbmemo" placeholder="请输入表体备注" />
-            </el-form-item>
-          </div>
-        </el-col>
-        <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple">
-            <el-form-item label="存货编码:">
+            <el-form-item label="产品编号:">
               <el-input
                 v-model="filters.cinvcode"
-                @focus="cinvcodeFocus"
-                placeholder="请输入存货编码"
+                placeholder="请输入产品编号"
               />
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
-            <el-form-item label="供应商:">
-              <el-select
-                v-model="filters.ccusname"
-                clearable
-                filterable
-                placeholder="请输入供应商名称"
-              >
-                <el-option
-                  v-for="item in ccusnameList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
+            <el-form-item label="产品名称:">
+              <el-input
+                v-model="filters.cinvname"
+                placeholder="请输入产品名称"
+              />
+            </el-form-item>
+          </div>
+        </el-col>
+        <el-col :span="8" class="el-col">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="批号:">
+              <el-input v-model="filters.cbatch" placeholder="请输入批号" />
             </el-form-item>
           </div>
         </el-col>
@@ -143,16 +38,16 @@
 
       <el-row class="el-row">
         <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple-light">
-            <el-form-item label="收发类别:">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="区域名称:">
               <el-select
-                v-model="filters.crdname"
+                v-model="filters.cposccode"
                 clearable
                 filterable
-                placeholder="请输入收发类别"
+                placeholder="请选择区域"
               >
                 <el-option
-                  v-for="item in crdnameList"
+                  v-for="item in cposcList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -162,16 +57,16 @@
           </div>
         </el-col>
         <el-col :span="8" class="el-col">
-          <div class="grid-content ep-bg-purple-light">
-            <el-form-item label="单据状态:">
+          <div class="grid-content ep-bg-purple">
+            <el-form-item label="货位:">
               <el-select
-                v-model="filters.stats"
+                v-model="filters.cposcode"
                 clearable
                 filterable
-                placeholder="请选择单据状态"
+                placeholder="请选择货位"
               >
                 <el-option
-                  v-for="item in shztList"
+                  v-for="item in cposList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -214,7 +109,6 @@
         <el-table
           v-if="!headerData1.length"
           :data="fiterBodyData_List()"
-          @row-dblclick="handleRowDoubleClick"
           style="width: 100%"
           highlight-current-row
           :row-class-name="tableRowClassName"
@@ -222,63 +116,19 @@
           border
         >
           <!-- <el-table-column  prop="selected"  type="selection" width="55" :sortable="true" fixed/> -->
-          <el-table-column
-            prop="vouchCode"
-            label="单据编号"
-            width="150"
-            :sortable="true"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="vouchDate"
-            label="单据日期"
-            width="150"
-            :sortable="true"
-          />
-          <el-table-column
-            prop="crdname"
-            label="收发类别"
-            width="180"
-            :sortable="true"
-          />
-          <el-table-column prop="cvenname" label="供应商" width="200" />
-          <el-table-column prop="cwhname" label="仓库" width="180" />
-          <el-table-column prop="cPosName" label="货位" width="150" />
-          <el-table-column prop="cinvcode" label="存货编码" width="130" />
-          <el-table-column prop="cinvname" label="存货名称" width="120" />
-          <el-table-column prop="cinvstd" label="规格型号" width="120" />
-          <el-table-column prop="cComunitName" label="计量单位" width="100">
-          </el-table-column>
-          <el-table-column
-            prop="cbatch"
-            label="批次"
-            width="120"
-            :sortable="true"
-          />
-          <el-table-column
-            prop="inqty"
-            label="入库数量"
-            width="120"
-            :sortable="true"
-          />
-          <el-table-column
-            prop="cmocode"
-            label="生产订单号"
-            width="180"
-            :sortable="true"
-          />
-          <el-table-column
-            prop="cMemo"
-            label="表头备注"
-            width="120"
-            :sortable="true"
-          />
-          <el-table-column prop="cbmemo" label="表体备注" width="120">
-          </el-table-column>
+          <el-table-column prop="cinvcode" label="产品编码" width="200" />
+          <el-table-column prop="cinvname" label="产品名称" width="220" />
+          <el-table-column prop="cinvstd" label="规格型号" width="250" />
+          <el-table-column prop="cComUnitName" label="计量单位" width="130" />
+          <el-table-column prop="qty" label="数量" width="120" />
+          <el-table-column prop="cbatch" label="批号" width="120" />
+          <el-table-column prop="cposcode" label="货位编码" width="160" />
+          <el-table-column prop="cposname" label="货位名称" width="160" />
+          <el-table-column prop="cposccode" label="区域编码" width="160" />
+          <el-table-column prop="cposcname" label="区域名称" width="160" />
         </el-table>
         <el-table
           v-if="headerData1.length"
-          @row-dblclick="handleRowDoubleClick"
           :data="fiterBodyData_List()"
           style="width: 100%"
           highlight-current-row
@@ -322,7 +172,6 @@
       <cinvcodeDialog
         @recognize="recognize"
         @determine="determine"
-        @close="close"
         v-if="dialogVisible"
         ref="refAsnvoucher"
       >
@@ -345,18 +194,10 @@
         :SysInfo="SysInfo"
       />
     </el-dialog>
-    <el-dialog
-      v-model="dialogVisible2"
-      title="选择栏目"
-      @close="dialogVisible1 = false"
-      width="70%"
-      :draggable="false"
-    >
-    </el-dialog>
   </div>
 </template>
 
-<script lang="ts" name="WwList">
+<script lang="ts">
 import { reactive, ref } from "vue";
 import type { FormProps } from "element-plus";
 import { onMounted, onUnmounted } from "vue";
@@ -367,20 +208,9 @@ import { ElMessageBox, ElMessage, ElLoading } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { fa } from "element-plus/es/locale";
-// import AsnLoadPm from './AsnLoadPm.vue';
-import cinvcodeDialog from "../shipOut/cinvcodeDialog.vue";
-import orderTable from "@/components/titleBar/orderTable.vue";
-import type { HeaderItem } from "@/utils/query";
-import SingleUpload from "@/components/Upload/SingleUpload.vue";
-import router from "@/router";
 
 export default {
-  name: "WwList",
-  components: {
-    cinvcodeDialog,
-    orderTable,
-    SingleUpload,
-  },
+  components: {},
   setup() {
     const instance = getCurrentInstance();
     const globalObject =
@@ -481,6 +311,7 @@ export default {
       shortcuts,
     };
   },
+
   data() {
     return {
       name: "John", // Option API：使用 data 方法定义数据
@@ -517,14 +348,16 @@ export default {
         vouchDate: ref(""),
         cinvcode: "",
         cvouchtype: "",
-        cwhname: "",
+        cposccode: "",
         dpodate: ref(""),
         zhuangtai: "",
-        ccusname: "",
+        cposcode: "",
         cMemo: "",
         cbmemo: "",
         crdname: "",
         stats: "",
+        cinvname: "",
+        cbatch: "",
       },
       pageNum_List: 1,
       pageSize_List: 10,
@@ -533,13 +366,13 @@ export default {
       bodymultipleSelection: [],
       headerData1: [] as HeaderItem[],
       headerData2: [] as HeaderItem[],
-      cwhnameList: [
+      cposcList: [
         {
           value: "",
           label: "",
         },
       ],
-      ccusnameList: [
+      cposList: [
         {
           value: "",
           label: "",
@@ -563,16 +396,6 @@ export default {
           label: "",
         },
       ],
-      shztList: [
-        {
-          value: "0",
-          label: "未审",
-        },
-        {
-          value: "1",
-          label: "已审",
-        },
-      ],
       ElSelectLoading: false,
       ElSelectValue: "",
       ElSelectOptions: [{ value: "", label: "" }],
@@ -589,7 +412,7 @@ export default {
         ApiUrl: "",
         roles: "",
       },
-      tname: "WwList",
+      tname: "OoList",
     };
   },
   // async mounted(){
@@ -599,30 +422,29 @@ export default {
   // },
   async mounted() {
     console.log("mounted");
-
     const database = sessionStorage.getItem("cDatabase");
     const cUserId = sessionStorage.getItem("username");
     const cVenCode = sessionStorage.getItem("cVenCode");
     var roles = sessionStorage.getItem("roles");
-    //仓库列表
-    let cwhnameRes = await this.SqlWork(
+    //区域列表
+    let cposcList = await this.SqlWork(
       "select",
-      `select cwhcode,cwhname from wlzh_v_warehouse`
+      `select cposccode,cposcname from wlzh_Dz_positionClass`
     );
-    console.log("cwhnameRes", cwhnameRes.data);
-    this.cwhnameList = [];
-    cwhnameRes.data.forEach((item: any) => {
-      this.cwhnameList.push({ value: item.cwhcode, label: item.cwhname });
+    console.log("cposcList", cposcList.data);
+    this.cposcList = [];
+    cposcList.data.forEach((item: any) => {
+      this.cposcList.push({ value: item.cposccode, label: item.cposcname });
     });
-    //客户列表
-    let ccusnameRes = await this.SqlWork(
+    //货位列表
+    let cposList = await this.SqlWork(
       "select",
-      `select ccuscode,ccusname from wlzh_v_Customer`
+      `select cposcode,cposname from wlzh_Dz_position`
     );
-    console.log("ccusnameRes", ccusnameRes.data);
-    this.ccusnameList = [];
-    ccusnameRes.data.forEach((item: any) => {
-      this.ccusnameList.push({ value: item.ccuscode, label: item.ccusname });
+    console.log("cposList", cposList.data);
+    this.cposList = [];
+    cposList.data.forEach((item: any) => {
+      this.cposList.push({ value: item.cposcode, label: item.cposname });
     });
     //单据列表
     let cvouchtypeRes = await this.SqlWork(
@@ -752,9 +574,7 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
     handleDaochu(command: string) {
       ElMessage(`click on item ${command}`);
     },
-    uploadClick() {
-      this.dialogVisible2 = true;
-    },
+
     async loadData() {
       try {
         console.log("this.filters.vouchDate", this.filters.vouchDate);
@@ -771,33 +591,19 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
 
         var filterStr = "  ";
 
-        if (this.filters.ccusname) {
+        if (this.filters.cposcode) {
           filterStr +=
             (filterStr !== "  " ? "and " : "where ") +
-            " cvencode= '" +
-            this.filters.ccusname +
-            "'";
-        }
-        if (this.filters.cdepName) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            " cdepcode= '" +
-            this.filters.cdepName +
-            "'";
-        }
-        if (this.filters.cvouchtype) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            "  cvouchtype= '" +
-            this.filters.cvouchtype +
+            " cposcode= '" +
+            this.filters.cposcode +
             "'";
         }
 
-        if (this.filters.cwhname) {
+        if (this.filters.cposccode) {
           filterStr +=
             (filterStr !== "  " ? "and " : "where ") +
-            "  cwhcode = '" +
-            this.filters.cwhname +
+            "  cposccode = '" +
+            this.filters.cposccode +
             "'";
         }
 
@@ -815,65 +621,24 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
             this.filters.cinvcode +
             "'";
         }
-        if (this.filters.vouchDate && this.filters.vouchDate.length > 0) {
+        if (this.filters.cinvname) {
           filterStr +=
             (filterStr !== "  " ? "and " : "where ") +
-            "  vouchDate between '" +
-            moment(this.filters.vouchDate[0]).format("YYYY-MM-DD") +
-            "' and '" +
-            moment(this.filters.vouchDate[1]).format("YYYY-MM-DD") +
+            "  cinvname= '" +
+            this.filters.cinvname +
             "'";
         }
-
-        if (this.filters.dpodate && this.filters.dpodate.length > 0) {
+        if (this.filters.cbatch) {
           filterStr +=
             (filterStr !== "  " ? "and " : "where ") +
-            "  cpodate between '" +
-            moment(this.filters.dpodate[0]).format("YYYY-MM-DD") +
-            "' and '" +
-            moment(this.filters.dpodate[1]).format("YYYY-MM-DD") +
-            "'";
-        }
-
-        if (this.filters.vouchCode) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            "  vouchCode='" +
-            this.filters.vouchCode +
-            "'";
-        }
-        if (this.filters.crdname) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            "  crdcode='" +
-            this.filters.crdname +
-            "'";
-        }
-        if (this.filters.cbmemo) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            "  cbmemo='" +
-            this.filters.cbmemo +
-            "'";
-        }
-        if (this.filters.stats) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            "  stats='" +
-            this.filters.stats +
-            "'";
-        }
-        if (this.filters.cMemo) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            "  cMemo=''" +
-            this.filters.cMemo +
+            "  cbatch= '" +
+            this.filters.cbatch +
             "'";
         }
         let sql =
           filterStr !== "  "
-            ? " select * from wlzh_dz_rklist_u8 " + filterStr
-            : "select * from wlzh_dz_rklist_u8";
+            ? " select * from wlzh_v_dz_hwxcl " + filterStr
+            : "select * from wlzh_v_dz_hwxcl";
 
         let res = await this.SqlWork("select", sql);
 
@@ -968,27 +733,20 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
       this.filters.cinvcode = value.cinvname;
       this.dialogVisible = false;
     },
-    handleRowDoubleClick(row: any) {
-      console.log(row, this.$router, 12312312321);
-      router.push({
-        path: "/storeManage/WarehouseWarrant",
-        query: { vouchCode: row.vouchCode, autoid: row.id },
-      });
-      // this.VouchID = row.id
+    // this.VouchID = row.id
 
-      // this.dialogVisible = true
-    },
-    close() {
-      this.dialogVisible = false;
-    },
-    isNumeric(char: any): boolean {
-      // 正则表达式匹配数字，包括整数、浮点数以及正负号
-      const numericPattern = /^[0-9]+(\.[0-9]*)?$/;
-      // 如果是单个字符，先转换为字符串，然后匹配
-      const charStr = String(char);
-      // 判断是否匹配
-      return numericPattern.test(charStr);
-    },
+    // this.dialogVisible = true
+  },
+  close() {
+    this.dialogVisible = false;
+  },
+  isNumeric(char: any): boolean {
+    // 正则表达式匹配数字，包括整数、浮点数以及正负号
+    const numericPattern = /^[0-9]+(\.[0-9]*)?$/;
+    // 如果是单个字符，先转换为字符串，然后匹配
+    const charStr = String(char);
+    // 判断是否匹配
+    return numericPattern.test(charStr);
   },
 };
 </script>

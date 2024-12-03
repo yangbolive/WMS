@@ -161,7 +161,7 @@ function addTags() {
       path: route.path,
       fullPath: route.fullPath,
       affix: route.meta?.affix,
-      keepAlive: route.meta?.keepAlive,
+      keepAlive: route.meta?.keepAlive
     });
   }
 }

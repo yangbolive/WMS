@@ -398,7 +398,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts"  name="WarehouseWarrant">
 import { reactive, ref } from "vue";
 import type { FormProps } from "element-plus";
 import { onMounted, onUnmounted } from "vue";
@@ -553,7 +553,6 @@ export default {
       shortcuts,
     };
   },
-
   data() {
     return {
       name: "John", // Option API：使用 data 方法定义数据

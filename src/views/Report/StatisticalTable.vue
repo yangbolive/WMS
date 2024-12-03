@@ -122,12 +122,12 @@
         </el-col>
         <el-col :span="8" class="el-col">
           <div class="grid-content ep-bg-purple">
-            <el-form-item label="供应商:">
+            <el-form-item label="客户:">
               <el-select
                 v-model="filters.ccusname"
                 clearable
                 filterable
-                placeholder="请输入供应商名称"
+                placeholder="请输入客户名称"
               >
                 <el-option
                   v-for="item in ccusnameList"
@@ -168,7 +168,7 @@
                 v-model="filters.stats"
                 clearable
                 filterable
-                placeholder="请选择单据状态"
+                placeholder="请选择状态"
               >
                 <el-option
                   v-for="item in shztList"
@@ -225,14 +225,14 @@
           <el-table-column
             prop="vouchCode"
             label="单据编号"
-            width="150"
+            width="180"
             :sortable="true"
           >
           </el-table-column>
           <el-table-column
             prop="vouchDate"
             label="单据日期"
-            width="150"
+            width="180"
             :sortable="true"
           />
           <el-table-column
@@ -241,13 +241,13 @@
             width="180"
             :sortable="true"
           />
-          <el-table-column prop="cvenname" label="供应商" width="200" />
+          <el-table-column prop="ccusname" label="客户" width="180" />
           <el-table-column prop="cwhname" label="仓库" width="180" />
-          <el-table-column prop="cPosName" label="货位" width="150" />
-          <el-table-column prop="cinvcode" label="存货编码" width="130" />
+          <el-table-column prop="cPosName" label="货位" width="130" />
+          <el-table-column prop="cinvcode" label="存货编码" width="120" />
           <el-table-column prop="cinvname" label="存货名称" width="120" />
           <el-table-column prop="cinvstd" label="规格型号" width="120" />
-          <el-table-column prop="cComunitName" label="计量单位" width="100">
+          <el-table-column prop="cComunitName" label="计量单位" width="120">
           </el-table-column>
           <el-table-column
             prop="cbatch"
@@ -345,18 +345,10 @@
         :SysInfo="SysInfo"
       />
     </el-dialog>
-    <el-dialog
-      v-model="dialogVisible2"
-      title="选择栏目"
-      @close="dialogVisible1 = false"
-      width="70%"
-      :draggable="false"
-    >
-    </el-dialog>
   </div>
 </template>
 
-<script lang="ts" name="WwList">
+<script lang="ts">
 import { reactive, ref } from "vue";
 import type { FormProps } from "element-plus";
 import { onMounted, onUnmounted } from "vue";
@@ -367,19 +359,10 @@ import { ElMessageBox, ElMessage, ElLoading } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import { fa } from "element-plus/es/locale";
-// import AsnLoadPm from './AsnLoadPm.vue';
-import cinvcodeDialog from "../shipOut/cinvcodeDialog.vue";
-import orderTable from "@/components/titleBar/orderTable.vue";
-import type { HeaderItem } from "@/utils/query";
-import SingleUpload from "@/components/Upload/SingleUpload.vue";
-import router from "@/router";
+
 
 export default {
-  name: "WwList",
   components: {
-    cinvcodeDialog,
-    orderTable,
-    SingleUpload,
   },
   setup() {
     const instance = getCurrentInstance();
@@ -481,6 +464,7 @@ export default {
       shortcuts,
     };
   },
+
   data() {
     return {
       name: "John", // Option API：使用 data 方法定义数据
@@ -589,7 +573,7 @@ export default {
         ApiUrl: "",
         roles: "",
       },
-      tname: "WwList",
+      tname: "OoList",
     };
   },
   // async mounted(){
@@ -599,7 +583,6 @@ export default {
   // },
   async mounted() {
     console.log("mounted");
-
     const database = sessionStorage.getItem("cDatabase");
     const cUserId = sessionStorage.getItem("username");
     const cVenCode = sessionStorage.getItem("cVenCode");
@@ -752,9 +735,7 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
     handleDaochu(command: string) {
       ElMessage(`click on item ${command}`);
     },
-    uploadClick() {
-      this.dialogVisible2 = true;
-    },
+
     async loadData() {
       try {
         console.log("this.filters.vouchDate", this.filters.vouchDate);
@@ -774,7 +755,7 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
         if (this.filters.ccusname) {
           filterStr +=
             (filterStr !== "  " ? "and " : "where ") +
-            " cvencode= '" +
+            " ccuscode= '" +
             this.filters.ccusname +
             "'";
         }
@@ -849,18 +830,18 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
             this.filters.crdname +
             "'";
         }
-        if (this.filters.cbmemo) {
-          filterStr +=
-            (filterStr !== "  " ? "and " : "where ") +
-            "  cbmemo='" +
-            this.filters.cbmemo +
-            "'";
-        }
         if (this.filters.stats) {
           filterStr +=
             (filterStr !== "  " ? "and " : "where ") +
             "  stats='" +
             this.filters.stats +
+            "'";
+        }
+        if (this.filters.cbmemo) {
+          filterStr +=
+            (filterStr !== "  " ? "and " : "where ") +
+            "  cbmemo='" +
+            this.filters.cbmemo +
             "'";
         }
         if (this.filters.cMemo) {
@@ -872,8 +853,8 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
         }
         let sql =
           filterStr !== "  "
-            ? " select * from wlzh_dz_rklist_u8 " + filterStr
-            : "select * from wlzh_dz_rklist_u8";
+            ? " select * from wlzh_dz_cklist_u8 " + filterStr
+            : "select * from wlzh_dz_cklist_u8";
 
         let res = await this.SqlWork("select", sql);
 
@@ -971,7 +952,7 @@ select crdcode,crdname from  wlzh_v_Rd_Style`
     handleRowDoubleClick(row: any) {
       console.log(row, this.$router, 12312312321);
       router.push({
-        path: "/storeManage/WarehouseWarrant",
+        path: "/shipOut/warehouse",
         query: { vouchCode: row.vouchCode, autoid: row.id },
       });
       // this.VouchID = row.id

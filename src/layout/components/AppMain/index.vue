@@ -1,24 +1,19 @@
 <template>
-  <section class="app-main">
-    <router-view>
-      <template #default="{ Component, route }">
-        <transition
-          enter-active-class="animate__animated animate__fadeIn"
-          mode="out-in"
-        >
-          <keep-alive :include="cachedViews">
-            <component :is="Component" :key="route.path" />
-          </keep-alive>
-        </transition>
-      </template>
-    </router-view>
-  </section>
+<div class="app-main">
+  <router-view v-slot="{Component}">
+       <keep-alive :include="cachedViews && cachedViews.map((item:any) => item.name)">
+         <component :is="Component"  />
+       </keep-alive>
+ </router-view>
+</div>
 </template>
 
 <script setup lang="ts">
 import { useTagsViewStore } from "@/store";
-
-const cachedViews = computed(() => useTagsViewStore().cachedViews); // 缓存页面集合
+import { storeToRefs } from "pinia";
+const store= useTagsViewStore();
+const { cachedViews } = storeToRefs(store);
+//const cachedViews = computed(() => useTagsViewStore().cachedViews); // 缓存页面集合
 </script>
 
 <style lang="scss" scoped>

@@ -1,3 +1,5 @@
+import { KeepAlive } from "vue";
+
 export const Competence = [
   {
     children: [
@@ -72,10 +74,11 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
-      name: "入库单",
+      name: "WarehouseWarrant",
       parent_id:12,
-      path: "inventory",
+      path: "WarehouseWarrant",
       title: "入库单",
     },
     {
@@ -91,10 +94,11 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
-      name: "入库单列表",
+      name: "WwList",
       parent_id: 11,
-      path: "inventoryList",
+      path: "WwList",
       title: "入库单列表",
     },
   ],
@@ -105,13 +109,14 @@ export const Competence = [
     icon: "document",
     roles: ["ROOT", "ADMIN", "vendor"],
     title: "入库管理",
+    KeepAlive:true
   },
   icon: "setting",
   id: 10,
   name: "入库管理",
   path: "/storeManage",
   parent_id: 10,
-  keep_alive: null,
+  keep_alive: true,
   igrade: 10,
 },
 {
@@ -129,8 +134,9 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
-      name: "出库单",
+      name: "OutboundOrder",
       parent_id:22,
       path: "warehouse",
       title: "出库单",
@@ -148,8 +154,9 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
-      name: "出库单列表",
+      name: "OoList",
       parent_id: 21,
       path: "warehouseList",
       title: "出库单列表",
@@ -262,6 +269,7 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
       name: "借出单",
       parent_id:42,
@@ -281,6 +289,7 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
       name: "借出单列表",
       parent_id: 41,
@@ -319,6 +328,7 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
       name: "归还单",
       parent_id:52,
@@ -338,6 +348,7 @@ export const Competence = [
         icon: "document",
         hidden: false,
         roles: [],
+        KeepAlive:true
       },
       name: "归还单列表",
       parent_id: 51,
@@ -474,5 +485,62 @@ export const Competence = [
   parent_id: 70,
   keep_alive: null,
   igrade: 70,
+},
+{
+  children: [
+    {
+      always_show: null,
+      component: () => import("/src/views/Report/StandingStock.vue"),
+      hidden: false,
+      icon: "document",
+      id:82,
+      igrade: 82,
+      keep_alive: true,
+      meta: {
+        title: "货位存量",
+        icon: "document",
+        hidden: false,
+        roles: [],
+      },
+      name: "货位存量",
+      parent_id:82,
+      path: "StandingStock",
+      title: "货位存量",
+    },
+    {
+      always_show: null,
+      component: () => import("/src/views/Report/StatisticalTable.vue"),
+      hidden: false,
+      icon: "document",
+      id: 81,
+      igrade: 81,
+      keep_alive: true,
+      meta: {
+        title: "汇总统计表",
+        icon: "document",
+        hidden: false,
+        roles: [],
+      },
+      name: "汇总统计表",
+      parent_id: 81,
+      path: "StatisticalTable",
+      title: "汇总统计表",
+    },
+  ],
+  component: () => import("/src/layout/index.vue"),
+  hidden: false,
+  meta: {
+    hidden: false,
+    icon: "document",
+    roles: ["ROOT", "ADMIN", "vendor"],
+    title: "报表查询",
+  },
+  icon: "setting",
+  id: 80,
+  name: "报表查询",
+  path: "/Report",
+  parent_id: 80,
+  keep_alive: null,
+  igrade: 80,
 },
 ];
